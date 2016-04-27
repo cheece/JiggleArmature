@@ -49,6 +49,9 @@ import mathutils
 import math
 import os
 from mathutils import *
+from bpy.app.handlers import persistent
+
+
 class JiggleArmature(bpy.types.PropertyGroup):
     enabled = bpy.props.BoolProperty(default=False)
     iterations = bpy.props.IntProperty(min=1, default = 2)
@@ -265,6 +268,9 @@ class BakeOperator(bpy.types.Operator):
         bake()           
         return {'FINISHED'}    
 bpy.utils.register_class(BakeOperator)
+
+
+@persistent
 def update(scene, tm = False):
     global iters 
     global dt
@@ -325,7 +331,7 @@ class JiggleBonePanel(bpy.types.Panel):
 
     @classmethod
     def poll(cls, context):
-        return (context.object is not None and context.object.type == 'ARMATURE' and context.object.data.jiggle.enabled)
+        return (context.bone is not None and context.object is not None and context.object.type == 'ARMATURE' and context.object.data.jiggle.enabled)
 
     def draw_header(self, context):
         layout = self.layout
@@ -384,6 +390,7 @@ def register():
     bpy.utils.register_class(JiggleBonePanel)
     bpy.utils.register_class(JiggleArmaturePanel)
     bpy.app.handlers.frame_change_post.append(update) 
+    print("Jiggle Armature Registered")
 def unregister():    
     bpy.utils.unregister_class(JiggleArmature)
     bpy.utils.unregister_class(JiggleBone)
