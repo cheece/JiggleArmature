@@ -7,6 +7,7 @@ armature and then enable Jiggle Bone on the bones
 
 demo:
 https://www.youtube.com/watch?v=nwkNO93XBH4
+
 quick usage tutorial:
 https://www.youtube.com/watch?v=9cWIcoIApGw
 
