@@ -12,7 +12,7 @@ quick usage tutorial:
 https://www.youtube.com/watch?v=9cWIcoIApGw
 
 features:
-- Jiggle bones with pressure, stretch and shape constraints
+- Jiggle bones with volume conservation, stretch and shape constraints
 - Test mode for quick preview of the simulation, enabled by default
 - record simulation intro animation
     
