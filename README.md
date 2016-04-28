@@ -19,3 +19,5 @@ features:
 if you want to support the project you can donate to
 the following bitcoin address: 
 3CZjZzS9UyZiYf3mfdxM5VwN9dgFB7XKht
+or support cheece on patreon:
+https://www.patreon.com/user?u=2597243
