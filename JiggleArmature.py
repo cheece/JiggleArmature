@@ -63,7 +63,8 @@ class JiggleBone(bpy.types.PropertyGroup):
     Kl = bpy.props.FloatProperty(name = "length conservation",min=0.0, max=1.0, default = 0.5)
     Ks = bpy.props.FloatProperty(name = "shape conservation",min=0.0, max=1.0, default = 0.5)
     Kv = bpy.props.FloatProperty(name = "volume conservation",min=0.0, max=1.0, default = 0.5)
-    mass = bpy.props.FloatProperty(min=0.0001, default = 1.0)
+    mass = bpy.props.FloatProperty(min=0.0001, default = 1.0)  
+   # Sv = bpy.props.FloatProperty(name = "bone volume conservation",min=0.0, max=1.0, default = 0.0)
     
     X = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
     V = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
@@ -132,6 +133,7 @@ def updateMat(ow, iow,b):
         aM[0][3] = O.x #Jb.X.x-aM[0][3]    
         aM[1][3] = O.y #Jb.X.y-aM[1][3]
         aM[2][3] = O.z #Jb.X.z-aM[2][3]
+        deform = (lv/l)
         cur = getAxis(aM,1)
         cur *= (lv/l)/cur.length
         
@@ -139,6 +141,15 @@ def updateMat(ow, iow,b):
         aM[1][1] = cur.y #Jb.X.y-aM[1][3]
         aM[2][1] = cur.z #Jb.X.z-aM[2][3]
         
+        #if(Jb.Sv>0.0 and lv>0.0):            
+            #rv = math.sqrt(l/lv)#/cur.length
+            #ax = getAxis(aM,0)
+            #az = getAxis(aM,2)
+            #ax.length = rv*(Jb.Sv) + ax.length*(1-Jb.Sv)
+            #az.length = rv*(Jb.Sv) + az.length*(1-Jb.Sv)
+            #setAxis(aM,0,ax)
+            #setAxis(aM,2,az)
+            
         
         Sb.wmat = iow*aM
         #scene = bpy.context.scene
@@ -148,11 +159,15 @@ def updateMat(ow, iow,b):
 def getAxis(M,i):
     return   Vector((M[0][i],M[1][i],M[2][i]))
 
-
+def setAxis(M,i,v):
+    M[0][i] = v[0]
+    M[1][i] = v[1]
+    M[2][i] = v[2]
 def resetBone(ow, iow,b):
     par = b.parent
-    im = par.bone.matrix_local.inverted()* b.bone.matrix_local
-    M = ow*par.matrix* im    
+    Sb = getS(b)
+    Sbp = getS(b.parent)
+    M = ow*Sbp.wmat* Sb.rmat #im  
     l = b.bone.length    
     tg = Vector((M[0][1]*l+M[0][3],M[1][1]*l+M[1][3],M[2][1]*l+M[2][3]))#(M[0][1]+M[0][3],M[1][1]+M[1][3],M[2][1]+M[2][3]))
     
@@ -170,15 +185,15 @@ def updateBone(ow, iow,b):
     #im = par.bone.matrix_local.inverted()* b.bone.matrix_local
     M = ow*Sbp.wmat* Sb.rmat #im
     
-    l = b.bone.length
     
-    tg = Vector((M[0][1]*l+M[0][3],M[1][1]*l+M[1][3],M[2][1]*l+M[2][3]))#(M[0][1]+M[0][3],M[1][1]+M[1][3],M[2][1]+M[2][3]))
-    
+     
     aM = M.copy() #ow*b.matrix.copy()
     
 
 
     N = getAxis(aM, 1)
+    l = b.bone.length*N.length
+    N/= N.length
     Nl = N*l
     X0 = getAxis(aM, 3)
     X1 = Jb.P
@@ -351,6 +366,7 @@ class JiggleBonePanel(bpy.types.Panel):
             col.prop(bon.jiggle,"mass")
             col.prop(bon.jiggle,"debug")
             col.prop(bon.jiggle,"max_deformation")
+           # col.prop(bon.jiggle,"Sv")
 
 
 class JiggleArmaturePanel(bpy.types.Panel):
@@ -390,7 +406,7 @@ def register():
     bpy.utils.register_class(JiggleBonePanel)
     bpy.utils.register_class(JiggleArmaturePanel)
     bpy.app.handlers.frame_change_post.append(update) 
-    print("Jiggle Armature Registered")
+    #print("Jiggle Armature Registered")
 def unregister():    
     bpy.utils.unregister_class(JiggleArmature)
     bpy.utils.unregister_class(JiggleBone)
