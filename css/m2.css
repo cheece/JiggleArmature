@@ -1,6 +1,36 @@
 .rounded {
 }
 .page-m2{
+  border: 20px;
+
+  position:relative;
+  height:auto !important; /* real browsers */
+  height:100%; /* IE6: treaded as min-height*/
+
+  min-height:100%; /* real browsers */
+}
+a.site-title, a.site-title:visited{
+
+  color: rgb(255,255,255);
+  text-decoration: none;
+}
+.m2-m2{
   background-color: rgb(200,200,230);
   border: 20px;
+  bottom: 0px;
+  top: 0px;
+  position: absolute;
+
+}
+
+.active_item a,.active_item a:visited{
+    color: rgb(255,9,9);
+}
+.footer-m2{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
 }

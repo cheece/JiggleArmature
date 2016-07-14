@@ -1,0 +1,26 @@
+---
+layout: docs
+---
+<script>
+  current = "#e02";
+</script>
+
+<p>The algorithm used for the simulation of the jiggle bones is based on the position based dynamics algorithm (view <a href="http://matthias-mueller-fischer.ch/publications/posBasedDyn.pdf">http://matthias-mueller-fischer.ch/publications/posBasedDyn.pdf</a>)
+so it has the same limitations and advantages.</p>
+
+<p>The  elements that defines the behavior of a jiggle bone are the constraints, in the current addon there are three constraints: </p>
+
+<ul>
+<li>
+<strong>length constraint</strong>: force the bone to its original length.</li>
+<li>
+<strong>shape constraint</strong>: force the the bone to its initial matrix relative to the parent.</li>
+<li>
+<strong>volume constraint</strong>: if you see the bone as a skewed cylinder with basis on the parent this constraint will force the skewed cylinder to its original volume.</li>
+</ul>
+
+<p>The constraints just have a parameter, the constraint constant, as in position based dynamics, the behavior of the simulation is dependent on the time step  (the inverse of the frames per second), so if you change the scene's frame rate the simulation behavior will change too. Higher frame rates implies stronger forces. The damping force is also dependent on the frame rate of the scene. </p>
+
+<p>The non-lineal system of equations is solved iteratively, when treating with long chains of bones there will be many competing constraints, this incurs in errors on the simulation, to reduce these errors just increase the number of iterations (20 iterations work fine to me most of the time).</p>
+
+<p>We are working to improve the jiggle bone algorithm in the next versions </p>

@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar navbar navbar-default navbar-fixed-side">
+        <li><a id="e01" href="{{ site.baseurl }}/docs/index">Getting Started</a></li>
+        <li><a id="e02" href="{{ site.baseurl }}/docs/01">How it works?</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        {{ content }}
+
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){$(current).html("> " + $(current).html())});
+</script>

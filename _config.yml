@@ -13,7 +13,7 @@ description: > # this means to ignore newlines until "baseurl:"
   animation tool for blender, it is an easy way to create
     wiggle effects on blender, just enable jiggle bone on the bones you want to be jiggly
 
-baseurl: "/JiggleArmature" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /JiggleArmature
 url: "http://yourdomain.com" # the base hostname & protocol for your site
 twitter_username: jekyllrb
 github_username:  cheece
