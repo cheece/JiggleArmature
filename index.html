@@ -1,0 +1,34 @@
+---
+layout: default
+---
+
+<div class="home">
+  <p>
+    {{ site.description }}
+  </p>
+  <iframe width="420" height="315" src="https://www.youtube.com/embed/nwkNO93XBH4" frameborder="0" allowfullscreen></iframe>
+
+
+  <h1 class="page-heading">News</h1>
+  <div class="container">
+    <div class="col"  id="posts">
+      {% for post in site.posts %}
+        <div clas="row-md-4">
+          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+          <h2>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          </h2>
+        </div>
+      {% endfor %}
+    </div>
+    <br>
+    <button class="glyphicon glyphicon-arrow-left" disabled id="prev_page"> </button>
+    <button class="glyphicon glyphicon-arrow-right" disabled id="next_page"> </button>
+    <script src="js/posts.js"></script>
+  </div>
+
+
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+
+</div>
