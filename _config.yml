@@ -7,13 +7,13 @@
 
 # Site settings
 title: JiggleArmature
-email: cheecedev@gmail.com
+email: cheecedev@gmail.com  
 description: > # this means to ignore newlines until "baseurl:"
   JiggleArmature is a bone based soft body
-  animation tool for blender, it is an easy way to create 
+  animation tool for blender, it is an easy way to create
     wiggle effects on blender, just enable jiggle bone on the bones you want to be jiggly
-  
-baseurl: "" # the subpath of your site, e.g. /blog
+
+baseurl: "/JiggleArmature" # the subpath of your site, e.g. /blog
 url: "http://yourdomain.com" # the base hostname & protocol for your site
 twitter_username: jekyllrb
 github_username:  cheece
