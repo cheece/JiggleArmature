@@ -9,7 +9,8 @@ We are workin on the new [0.2.0 version](https://github.com/cheece/JiggleArmatur
 the new features in this version will be:
 
 * **Copy jiggle bone properties** for quickly setting jiggle bone in many bones 
-* **Time steping** for supporting higher forces and reduce simulation error
+* **Integration sub-steps** for supporting higher forces and reduce simulation error
+* **Multile bug fixes** 
 
 (more features will be added to this list...)
 
