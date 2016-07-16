@@ -16,7 +16,7 @@ baseurl: "/JiggleArmature" # the subpath of your site, e.g. /blog
 url: "http://yourdomain.com" # the base hostname & protocol for your site
 twitter_username: jekyllrb
 github_username:  cheece
-paginate: 5
+paginate: 5 
 
 # Build settings
 markdown: kramdown
