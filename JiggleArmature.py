@@ -68,6 +68,7 @@ class JiggleBone(bpy.types.PropertyGroup):
     mass = bpy.props.FloatProperty(min=0.0001, default = 1.0)  
    # Sv = bpy.props.FloatProperty(name = "bone volume conservation",min=0.0, max=1.0, default = 0.0)
     
+       
     X = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
     V = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
     P = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')   
@@ -259,8 +260,15 @@ def updateBone(b):
     applyConstraint(b,(Xl1).dot(Xl1),-Xl1*2,Xl1*2,Jb.Ks) 
     if(par.bone.jiggle.enabled):
         updateMat(par)     
-              
+    if(b.bone.jiggle_control>0.0):
+        tm = Sbp.wmat*Sb.lm
+        N = getAxis(tm, 1)            
+        N/= N.length
+        tp = X0 + N*l
+        Jb.P += (tp - Jb.P)*b.bone.jiggle_control
     updateMat(b)
+def controlBone(b):
+    par = b.parent
 
     
     
@@ -281,6 +289,8 @@ class BoneState:
         self.rmat = None       
         self.lmat = None
         self.scale = mathutils.Vector((1,1,1))
+        self.control_P = None
+        self.lm = None
     def setW(self,w):
         self.wmat = w
         self.iwmat = w.inverted()
@@ -402,11 +412,16 @@ def update(scene, tm = False):
                     M2 = ow*b.bone.matrix_local                                     
                     loc, rot, sca = M2.decompose()
                     s.scale = sca
+                    if(b.bone.jiggle.enabled and b.parent!=None):
+                        lM = b.parent.matrix.inverted() * b.matrix
+                        s.control_P = getAxis(lM,1)
+                        s.lm = lM
                     ctx.states.append(s)  
                     b.bone.jiggle.index = i   
                     i+=1      
                     
-                for b in  ol:            
+                for b in  ol:  
+                              
                     Jb = b.bone.jiggle
                     Jb.V+= scene.gravity*dt
                     Jb.V*= (1.0-Jb.Kd)
@@ -460,6 +475,8 @@ class JiggleBonePanel(bpy.types.Panel):
             col.prop(bon.jiggle,"mass")
             col.prop(bon.jiggle,"debug")
             col.prop(bon.jiggle,"max_deformation")
+            col.separator()
+            col.prop(bon,"jiggle_control")
         col.operator("jiggle.copy_bone")
         col.operator("jiggle.reset")
             
@@ -547,7 +564,8 @@ def register():
     bpy.utils.register_class(BakeOperator)
     bpy.utils.register_class(CopyJigglePropsOperator)
     bpy.utils.register_class(ResetJigglePropsOperator)
-    
+    bpy.types.Bone.jiggle_control = bpy.props.FloatProperty(name = "control",min=0.0, max=1.0, default = 0.0)
+
     
     bpy.app.handlers.frame_change_post.append(update) 
     #print("Jiggle Armature Registered")
