@@ -173,8 +173,8 @@ def updateMat(b):
         aM[2][3] = O.z #Jb.X.z-aM[2][3]
         #deform = (lv/l)
         cur = getAxis(aM,1)
-        cur *= (ll/l)/cur.length
-        if((lv/l)/cur.length >2.0):
+        cur *= (l)/cur.length
+        if((l)/cur.length >2.0):
             print((lv/l)/cur.length)
         
         aM[0][1] = cur.x #Jb.X.x-aM[0][3]    
@@ -236,6 +236,8 @@ def updateBone(b):
 
     N = getAxis(aM, 1)
     l = b.bone.length*Sb.scale[1]
+    if(b.bone.name== "p"):
+        print(l)
     
     N/= N.length
     Nl = N*l
