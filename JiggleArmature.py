@@ -30,7 +30,7 @@
 bl_info = {
     "name": "Jiggle Armature",
     "author": "Simón Flores",
-    "version": (0, 2, 3),
+    "version": (0, 2, 2),
     "blender": (2, 73, 0),
     "description": "Jiggle bone animation tool",
     "warning": "",
@@ -235,8 +235,7 @@ def updateBone(b):
 
     N = getAxis(aM, 1)
     l = b.bone.length*Sb.scale[1]
-    if(b.bone.name== "p"):
-        print(l)
+
     
     N/= N.length
     Nl = N*l
@@ -389,15 +388,16 @@ def preUpdate(scene, tm = False):
     global iters 
     global dt
     global ctx
-    if(not (scene.jiggle.test_mode or tm)):
-        return      
-    for o in scene.objects:
-        if(o.type == 'ARMATURE' and o.data.jiggle.enabled):
-            arm = o.data 
-            for b in o.pose.bones:        
-                if(b.bone.jiggle.enabled):   
-                    b.matrix_basis = mathutils.Matrix()
-                    pass
+    if(scene.frame_current <= bpy.context.scene.frame_start+1):            
+        if(not (scene.jiggle.test_mode or tm)  ):
+            return      
+        for o in scene.objects:
+            if(o.type == 'ARMATURE' and o.data.jiggle.enabled ):
+                arm = o.data 
+                for b in o.pose.bones:        
+                    if(b.bone.jiggle.enabled):   
+                        b.matrix_basis = mathutils.Matrix()
+                        
 @persistent
 def update(scene, tm = False):
     global iters 
@@ -622,3 +622,5 @@ def unregister():
     bpy.app.handlers.frame_change_pre.remove(preUpdate) 
 if __name__ == '__main__':
 	register()
+
+
