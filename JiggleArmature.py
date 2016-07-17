@@ -622,5 +622,3 @@ def unregister():
     bpy.app.handlers.frame_change_pre.remove(preUpdate) 
 if __name__ == '__main__':
 	register()
-
-
