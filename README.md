@@ -9,11 +9,12 @@ demo:
 https://www.youtube.com/watch?v=nwkNO93XBH4
 
 quick usage tutorial:
-https://www.youtube.com/watch?v=9cWIcoIApGw
+https://youtu.be/2ed51RjJFGQ
 
 features:
 - Jiggle bones with volume conservation, stretch and shape constraints
 - Test mode for quick preview of the simulation, enabled by default
 - record simulation intro animation
-
-donations: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W3GS252ZUT5CS
+- copy jiggle bone properties to other bones
+- time sub-stepping for accurate simulation
+- control jiggle bones(experimental)
