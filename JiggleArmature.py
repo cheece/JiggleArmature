@@ -30,7 +30,7 @@
 bl_info = {
     "name": "Jiggle Armature",
     "author": "Simón Flores",
-    "version": (0, 2, 1),
+    "version": (0, 2, 2),
     "blender": (2, 73, 0),
     "description": "Jiggle bone animation tool",
     "warning": "",
@@ -384,16 +384,49 @@ def normalizeM(m):
     # combine transformations
     return  mat_loc * mat_rot * mat_sca
 @persistent
+def preUpdate(scene, tm = False):    
+    global iters 
+    global dt
+    global ctx
+    if(not (scene.jiggle.test_mode or tm)):
+        return      
+    for o in scene.objects:
+        if(o.type == 'ARMATURE' and o.data.jiggle.enabled):
+            arm = o.data 
+            for b in o.pose.bones:        
+                if(b.bone.jiggle.enabled):   
+                    b.matrix_basis = mathutils.Matrix()
+                    pass
+@persistent
 def update(scene, tm = False):
     global iters 
     global dt
     global ctx
     dt = 1.0/(scene.render.fps*scene.jiggle.sub_steps)
     #print("beg")
+    if(not (scene.jiggle.test_mode or tm)):
+        return
+    if(scene.frame_current <= bpy.context.scene.frame_start+1):
+        for o in scene.objects:
+            if( o.type == 'ARMATURE' and o.data.jiggle.enabled):
+                arm = o.data
+                ow = o.matrix_world
+                iow = ow.inverted()
+                i=0
+                for b in o.pose.bones:
+                    if(b.bone.jiggle.enabled):                    
+                        M = ow *b.matrix #ow*Sbp.wmat* Sb.rmat #im
+                        l = b.bone.length
+                        tg = Vector((M[0][1]*l+M[0][3],M[1][1]*l+M[1][3],M[2][1]*l+M[2][3]))#(M[0][1]+M[0][3],M[1][1]+M[1][3],M[2][1]+M[2][3]))
+                        
+                        Jb = b.bone.jiggle
+                        Jb.X=tg
+                        Jb.P = tg
+                        Jb.V= Vector((0,0,0))
     for si in range(scene.jiggle.sub_steps):
             
         for o in scene.objects:
-            if(o.type == 'ARMATURE' and o.data.jiggle.enabled and (scene.jiggle.test_mode or tm)):
+            if(o.type == 'ARMATURE' and o.data.jiggle.enabled):
                 arm = o.data
                 ow = o.matrix_world
                 iow = ow.inverted()
@@ -568,6 +601,7 @@ def register():
 
     
     bpy.app.handlers.frame_change_post.append(update) 
+    bpy.app.handlers.frame_change_pre.append(preUpdate) 
     #print("Jiggle Armature Registered")
 def unregister():    
     bpy.utils.unregister_class(JiggleArmature)
@@ -581,6 +615,7 @@ def unregister():
     
    
     bpy.app.handlers.frame_change_post.remove(update) 
+    bpy.app.handlers.frame_change_pre.remove(preUpdate) 
 if __name__ == '__main__':
 	register()
 
