@@ -136,7 +136,7 @@ def updateMat(b):
     Sb = getS(b)
     Sbp = getS(b.parent)
         
-    l = b.bone.length
+    l = b.bone.length*Sb.scale[1]
     
     par = b.parent
     aM = nomu(Sb.rmat,Sbp.wmat,Sbp.iwmat,Sb.scale) #Sb.rmat #Sbp.wmat* Sb.rmat#ow*Sbp.wmat
@@ -173,9 +173,8 @@ def updateMat(b):
         aM[2][3] = O.z #Jb.X.z-aM[2][3]
         #deform = (lv/l)
         cur = getAxis(aM,1)
-        cur *= (l)/cur.length
-        if((l)/cur.length >2.0):
-            print((lv/l)/cur.length)
+        cur *= (ll/l)/cur.length
+
         
         aM[0][1] = cur.x #Jb.X.x-aM[0][3]    
         aM[1][1] = cur.y #Jb.X.y-aM[1][3]
