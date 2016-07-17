@@ -30,7 +30,7 @@
 bl_info = {
     "name": "Jiggle Armature",
     "author": "Simón Flores",
-    "version": (0, 2, 2),
+    "version": (0, 2, 3),
     "blender": (2, 73, 0),
     "description": "Jiggle bone animation tool",
     "warning": "",
