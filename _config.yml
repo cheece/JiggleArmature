@@ -7,16 +7,15 @@
 
 # Site settings
 title: JiggleArmature
-email: cheecedev@gmail.com  
+email: cheecedev@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  JiggleArmature is a bone based soft body
+  JiggleArmature is a jiggle bone
   animation tool for blender
 
-baseurl: "/JiggleArmature" # the subpath of your site, e.g. /blog 
-url: "http://yourdomain.com" # the base hostname & protocol for your site
-twitter_username: jekyllrb
+baseurl: "/JiggleArmature" #  the subpath of your site, e.g. /blog
+url: "http://cheece.github.io" # the base hostname & protocol for your site
 github_username:  cheece
-paginate: 5 
+paginate: 5
 
 # Build settings
 markdown: kramdown

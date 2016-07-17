@@ -5,12 +5,60 @@ layout: docs
   current = "#e01";
 </script>
 
-<p>In order to enable jiggle bone first enable Jiggle Armature on the Armature panel, then
-enable Jiggle Bone on the bones you want to be jiggly.
-Test mode is enabled by default and allows you to test the behaviour without baking,
-but be careful, if you have automatic keyframing enabled in blender the simulation
-will be recorded and you will need to remove the recorded keyframes manually
- </p>
 
+ <iframe width="420" height="315" src="https://www.youtube.com/embed/2ed51RjJFGQ" frameborder="0" allowfullscreen></iframe>
+<p>In order to add jiggle bones</p>
+<ol>
+    <li> Enable <b>Jiggle Armature</b> in the armature tab in the buttons window
+      <br>
+        <br>
+      <img src="{{ site.baseurl }}/img/c.png">
+              <br>
 
- <iframe width="560" height="315" src="https://www.youtube.com/embed/9cWIcoIApGw" frameborder="0" allowfullscreen></iframe>
+        <br>
+    </li>
+
+    <li> Select a bone and enable <b>Jiggle Bone</b> in the bone tab, <b>Jiggle Bone</b> properties
+won't be visible until <b>Jiggle Armature</b> is enabled in the armature it belongs to
+  <br>
+    <br>
+  <img src="{{ site.baseurl }}/img/b.png">
+    <br>
+    </li>
+</ol>
+<p>
+Now if you press ctrl+a or click in the <b>play animation button</b> you will see a jiggle bone moving.
+</p>
+
+<br>
+
+</ul>
+    <li> You can select several bones and copy the properties of the active one to the others clicking on
+      <b>Copy jiggle bone properties</b> , using this you can save many time
+    </li>
+
+    <li> JiggleArmature doesn't reset the bone's position, rotation or scale when the simulation ends,
+      so if you don't mark key frames at the start of the simulation the jiggle bones will keep their
+      last transform.
+        Jiggle bones store velocity and head position, even if you change the bone rotation manually it won't change the
+          internal head position inside the jiggle bone,
+        , you can reset the state of the jiggle bone clicking on <b>Reset State</b>, it will update the internal head position
+        to the current transform of the bone and it will set velocity to zero
+    </li>
+
+    <li>
+        You can bake the simulation clicking <b>Bake</b> in the panel <b>Jiggle Scene </b> in the scene tab, it will
+        record the simulation from the start frame to the end frame into key frames. Once baked you can remove it just
+        deleting the recorded key frames
+    </li>
+    <li>
+        To reduce simulation error increase the number of iterations in the <b>Jigle Armature</b> panel
+    </li>
+    <li>
+        To increase the strength of the consotraints increase the simulation sub-steps in the  <b>Jigle Scene</b> panel 
+    </li>
+    <li>
+        Test mode is enabled by default and allows you to view the simulation in real time, but you can disable it in the
+        <b>Jiggle Scene</b> panel in the scene tab
+    </li>
+</ul>

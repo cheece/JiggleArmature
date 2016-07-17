@@ -1,12 +1,13 @@
 Features:
 
-* **Quick setup of jiggle effects** 
+* **Quick setup of jiggle bones**
 * **PBD based integrator**
 * **Constraints for stretch, volume and shape**
-* **Test mode for rapid preview of simulation**
-* **Animation Baking**
+* **Test mode for real time preview of the simulation**
+* **Animation baking**
+* **Jiggle bone control** (Experimental)
 
 Limitations:
 
 * **Currently not supported jiggle effect of rotation about bone axis**
-* **Simulation behaviour is dependent on the frame rate**
+* **Simulation behavior is dependent on the frame rate**
