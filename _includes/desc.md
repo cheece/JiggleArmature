@@ -1,7 +1,6 @@
 Features:
 
 * **Quick setup of jiggle bones**
-* **PBD based integrator**
 * **Constraints for stretch, volume and shape**
 * **Test mode for real time preview of the simulation**
 * **Animation baking**
