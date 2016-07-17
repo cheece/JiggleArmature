@@ -423,6 +423,9 @@ def update(scene, tm = False):
                         Jb.X=tg
                         Jb.P = tg
                         Jb.V= Vector((0,0,0))
+        if(scene.frame_current <= bpy.context.scene.frame_start):
+            return
+            
     for si in range(scene.jiggle.sub_steps):
             
         for o in scene.objects:
