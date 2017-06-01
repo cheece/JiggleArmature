@@ -57,13 +57,10 @@ from bpy.app.handlers import persistent
 class JiggleScene(bpy.types.PropertyGroup):
     test_mode = bpy.props.BoolProperty(default=True)
     sub_steps = bpy.props.IntProperty(min=1, default = 2)
-    iterations = bpy.props.IntProperty(min=1, default = 2)
     last_frame = bpy.props.IntProperty()
     length_fix_iters = bpy.props.IntProperty(min=0, default = 2)
 
 
-bpy.utils.register_class(JiggleScene)
-bpy.types.Scene.jiggle = bpy.props.PointerProperty(type = JiggleScene)
 
 class JiggleScenePanel(bpy.types.Panel):
     bl_idname = "Scene_PT_jiggle"
@@ -79,13 +76,11 @@ class JiggleScenePanel(bpy.types.Panel):
         col = layout.column()
         col.prop(context.scene.jiggle,"test_mode")
         col.prop(context.scene.jiggle,"sub_steps")
-        col.prop(context.scene.jiggle,"iterations")
+        #col.prop(context.scene.jiggle,"iterations")
         #col.prop(context.scene.jiggle,"length_fix_iters")
         col.operator("jiggle.bake")
 
 
-
-bpy.utils.register_class(JiggleScenePanel)
 
 def funKd(self,context):
     b = context.bone
@@ -124,8 +119,8 @@ def funp(prop):
         inop = False
     return f
 class JiggleBone(bpy.types.PropertyGroup):
-    enabled = bpy.props.BoolProperty(default=False)
-    Kd = bpy.props.FloatProperty(name = "damping",min=0.0, default = 0.1, update = funp("Kd"))
+    enabled = bpy.props.BoolProperty(default=False, update = funp("enabled"))
+    Kd = bpy.props.FloatProperty(name = "damping",min=0.0, default = 1, update = funp("Kd"))
     Ks = bpy.props.FloatProperty(name = "linear spring force",min=0.0 ,default = 100, update = funp("Ks"))
     Kr = bpy.props.FloatProperty(name = "angular spring force",min=0.0, default = 100)
     mass = bpy.props.FloatProperty(min=0.0001, default = 1.0, update = funp("mass"))  
@@ -133,10 +128,9 @@ class JiggleBone(bpy.types.PropertyGroup):
     R = bpy.props.FloatVectorProperty(size=4,subtype='QUATERNION')
     V = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
     P = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
-  
-bpy.utils.register_class(JiggleBone)
-
-bpy.types.Bone.jiggle = bpy.props.PointerProperty(type = JiggleBone)
+    
+    
+    
 
 def skew(v):
     m = Matrix.Identity(3)
@@ -185,8 +179,7 @@ class ResetJigglePropsOperator(bpy.types.Operator):
                         Jb.P = tg 
                         #Jb.M = Matrix(M)
         return {'FINISHED'}
-    
-bpy.utils.register_class(ResetJigglePropsOperator)
+      
 
 class JiggleBonePanel(bpy.types.Panel):
     bl_idname = "Bone_PT_jiggle_bone"
@@ -215,8 +208,7 @@ class JiggleBonePanel(bpy.types.Panel):
             col.prop(bon.jiggle,"Kd")
             col.prop(bon.jiggle,"mass")
         col.operator("jiggle.reset")
-            
-bpy.utils.register_class(JiggleBonePanel)
+
 
 
 class JB:
@@ -254,25 +246,6 @@ def step(scene):
                     propB(ow,b,bl,None)
             for j in range( scene.jiggle.sub_steps):  
                     
-                for i in range(scene.jiggle.length_fix_iters):            
-                    for wb in bl:
-                        b = wb.b
-                        if(b.bone.jiggle.enabled):
-                            Jb = b.bone.jiggle
-                            O = mpos(wb.w)
-                            if(b.parent.bone.jiggle.enabled):
-                                O = b.parent.bone.jiggle.P
-                            OP = Jb.P -O    
-                            l = b.bone.length
-                            dP = -OP*(OP.length - l)/OP.length
-                            w0 = 0
-                            w1 = 1
-                            if(b.parent.bone.jiggle.enabled):
-                               w0 = 1.0/b.parent.bone.jiggle.mass
-                               w1 = Jb.mass
-                            Jb.P += dP*w1/(w0 + w1)
-                            if(b.parent.bone.jiggle.enabled):
-                                b.parent.bone.jiggle.P += -dP*w0/(w0 + w1)    
                                                  
                 for wb in bl:
                     b = wb.b
@@ -387,4 +360,26 @@ def update(scene, tm = False):
         #
         step(scene)        
 
-bpy.app.handlers.frame_change_post.append(update) 
+def register():
+    bpy.app.handlers.frame_change_post.append(update) 
+    
+                
+    bpy.utils.register_class(JiggleScene)
+    bpy.types.Scene.jiggle = bpy.props.PointerProperty(type = JiggleScene)
+    bpy.utils.register_class(JiggleScenePanel)
+    bpy.utils.register_class(JiggleBone)
+
+    bpy.types.Bone.jiggle = bpy.props.PointerProperty(type = JiggleBone)
+    bpy.utils.register_class(ResetJigglePropsOperator)
+
+    bpy.utils.register_class(JiggleBonePanel)
+def unregister():    
+
+    bpy.utils.unregister_class(JiggleScene)
+    bpy.utils.unregister_class(JiggleScenePanel)
+    bpy.utils.unregister_class(JiggleBone)
+    bpy.utils.unregister_class(ResetJigglePropsOperator)
+    bpy.utils.unregister_class(JiggleBonePanel)
+    bpy.app.handlers.frame_change_post.remove(update) 
+if __name__ == '__main__':
+	register()
