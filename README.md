@@ -27,3 +27,6 @@ changelog from version 1
 
 more info at (soon): 
  http://cheece.github.io/JiggleArmature/
+ 
+if you want to contribute consider supporting me on patreon:
+https://www.patreon.com/cheece
