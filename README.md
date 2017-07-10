@@ -15,7 +15,7 @@ features:
  
 limitations:
  
- - the phisical behaviour depends on fps of the scene and the selected number of iterations
+ - the phisical behaviour depends on the fps of the scene and the selected number of iterations
  
 changelog from version 1
  
