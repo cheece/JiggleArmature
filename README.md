@@ -8,7 +8,7 @@ scene settings and then enable Jiggle Bone on the bones
 features:
  
  - easy animation of softbody effects using just bones
- - real time simulation of the wiggle physics
+ - real time simulation 
  - multiple edition of parameters for selected jiggle bones
  - jiggle bone control through control bones
  - unconditionally stable simulation
