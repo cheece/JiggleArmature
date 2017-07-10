@@ -12,6 +12,7 @@ features:
  - multiple edition of parameters for selected jiggle bones
  - jiggle bone control through control bones
  - unconditionally stable simulation
+ 
 limitations:
  
  - the phisical behaviour depends on fps of the scene and the selected number of iterations
