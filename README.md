@@ -15,5 +15,3 @@ features:
 - Jiggle bones with volume conservation, stretch and shape constraints
 - Test mode for quick preview of the simulation, enabled by default
 - record simulation intro animation
-
-donations: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W3GS252ZUT5CS
