@@ -1135,7 +1135,7 @@ def step(scene):
     global dt
     global ctx
     global cc
-    sub_steps = 1#*scene.jiggle.sub_steps)
+    #sub_steps = 1#*scene.jiggle.sub_steps)
     dt = 1.0/(scene.render.fps) 
   
     for o in scene.objects:
@@ -1316,50 +1316,27 @@ def update_post(scene, tm = False):
     global dt
     global ctx
     global cc
-    
+
+#backing = False
 @persistent
 def update(scene, tm = False):
     global iters 
     global dt
     global ctx
-    global cc
+    global cc 
     dt = 1.0/(scene.render.fps*scene.jiggle.sub_steps)
-    if(not (scene.jiggle.test_mode or tm)):
-        return
-   # print(scene.jiggle.test_mode)
-   # if(scene.frame_current == scene.jiggle.last_frame):
-   #     return        
-   # print("beg2 " + str(scene.frame_current)+ " " +  str(scene.jiggle.last_frame))
-    #if(scene.frame_current <  scene.jiggle.last_frame or scene.frame_current == scene.frame_start): #frame break
-    #    scene.jiggle.last_frame = scene.frame_current
-    #    for o in scene.objects:
-    #        if( o.type == 'ARMATURE'):
-    #            arm = o.data
-    #            ow = o.matrix_world
-    #            iow = ow.inverted()
-    #            i=0
-    #            for b in o.pose.bones:
-    #                if(b.bone.jiggle.enabled):
-    #                    M = ow*b.matrix #ow*Sbp.wmat* Sb.rmat #im
-    #
-    #                    Jb = b.bone.jiggle
-    #                    setq(Jb.R, M.to_quaternion())
-    #                    Jb.V = Vector((0,0,0))
-    #                    Jb.P = mpos(M)          
-    #                    Jb.W = Vector((0,0,0))
-    #                
-    #    if(scene.frame_current <= bpy.context.scene.frame_start):
-    #        return
-    nframes =1 #scene.frame_current - scene.jiggle.last_frame
-    for i in range(nframes):     
-        #
-        step(scene)        
+    if(not (scene.jiggle.test_mode or tm)):# or (backing and not tm)):
+        return 
+    step(scene)        
 
 def bake(aa):
     print("bake all:",aa)
     global ctx
+   # global backing 
+    
     scene = bpy.context.scene
     scene.frame_set(scene.frame_start)
+    
     for o in scene.objects:
         if(o.type == 'ARMATURE' and (o.select or aa)):
             
@@ -1380,8 +1357,10 @@ def bake(aa):
                     Jb.V = Vector((0,0,0))
                     Jb.P = mpos(M)
                     Jb.W = Vector((0,0,0))
-                    
-                    
+    
+    ltm = scene.jiggle.test_mode                
+    scene.jiggle.test_mode = False
+   # backing = True
     for i in range(scene.frame_start, scene.frame_end):
         scene.frame_set(i)
         update(scene,tm=True)
@@ -1398,7 +1377,8 @@ def bake(aa):
         
                 if(not m):
                     bpy.ops.object.posemode_toggle()
-                    
+    #backing= False
+    scene.jiggle.test_mode = ltm
                    
 class BakeOperator(bpy.types.Operator):
     a = bpy.props.BoolProperty()
