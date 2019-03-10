@@ -18,3 +18,6 @@ changelog
 * **Custom rest pose**  you can set custom rest poses for the bones
 * **Bake simulation button is back**  for selected bones and for all bones (in the scene tab)
 * **Improved solver**  it’s more stable than previous versions even on large chains of boneses
+
+[![Usage demo video](https://img.youtube.com/vi/Irv5P7PEc1k/0.jpg)](https://www.youtube.com/watch?v=Irv5P7PEc1k "Usage demonstration")
+ 
