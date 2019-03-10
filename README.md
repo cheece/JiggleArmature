@@ -10,11 +10,7 @@ features:
  - easy animation of softbody effects using just bones
  - real time simulation  
  - jiggle bone control through control bones
- - unconditionally stable simulation
- 
-limitations:
- 
- - the phisical behaviour depends on the fps of the scene and the selected number of iterations
+ - unconditionally stable simulation 
  
 changelog  
  
