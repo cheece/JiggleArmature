@@ -1,4 +1,4 @@
-# JiggleArmature 2
+# JiggleArmature
  Jiggle bone animation tool for blender
  
 this is a jiggle bone animation add-on for blender,
