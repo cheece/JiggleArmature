@@ -8,8 +8,7 @@ scene settings and then enable Jiggle Bone on the bones
 features:
  
  - easy animation of softbody effects using just bones
- - real time simulation 
- - multiple edition of parameters for selected jiggle bones
+ - real time simulation  
  - jiggle bone control through control bones
  - unconditionally stable simulation
  
@@ -17,17 +16,9 @@ limitations:
  
  - the phisical behaviour depends on the fps of the scene and the selected number of iterations
  
-changelog from version 1
+changelog  
  
- - volume, length and shape parameters reduced to one global **stiffness** parameter
- - jiggle bones now can't stretch (because it's not possible to set non ortogonal matrices to the blender bones)
- - removed sub steps parameter provisionally (because it introduced annoying discontinuities) 
- - removed bake button, if you need to record the animation just enable automatic keyframe insertion (the red button) and play the animation
- - **rotation based physics**, this version allows rotational wiggle effects about the bone axes  
- - **control bones**, you can control now the rotation of the jiggle bones using control bones 
-
-more info at (soon): 
- http://cheece.github.io/JiggleArmature/
- 
-if you want to contribute consider supporting me on patreon:
-https://www.patreon.com/cheece
+* **Simulation frame rate independent from scene frame rate**  for consistent simulation , the fps of the scene no longer affects the simulation behavior,  **time sub-stepping**  was removed since it’s no longer needed, you can change the simulation frame rate for an armature in the JiggleArmature settings in the Armature tab
+* **Custom rest pose**  you can set custom rest poses for the bones
+* **Bake simulation button is back**  for selected bones and for all bones (in the scene tab)
+* **Improved solver**  it’s more stable than previous versions even on large chains of boneses
