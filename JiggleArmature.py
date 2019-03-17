@@ -358,6 +358,8 @@ class JB:
         self.P = None
         self.R = None
         self.Q = None
+        self.cQ = None
+        self.Kc = 0
         self.iI = Matrix.Identity(3) #first naive approach
         self.iIw = self.iI
     def computeI(self):
@@ -1205,6 +1207,20 @@ def step(scene):
                         
                         wb.P = wb.X + Jb.V*dt
                         wb.computeI()
+                        
+                        
+                        if(Jb.control_bone!=""):
+                            if(Jb.control_bone in o.pose.bones):
+                                cb = o.pose.bones[Jb.control_bone]
+                                clm = cb.matrix
+                                if(cb.parent!=None):
+                                    clm = cb.parent.matrix.inverted()*clm
+                                wb.cQ = clm.to_quaternion().normalized()
+                                wb.Kc = 1- pow(1-Jb.control, 1/scene.jiggle.iterations)
+                            
+                            
+                            
+                            
                         bl2.append(wb)
                       #  print(wb.Q)
                     else:
@@ -1227,6 +1243,8 @@ def step(scene):
                             continue                
                         Jb = b.bone.jiggle                     
                         quatSpring(wb,Jb.rest if Jb.use_custom_rest else wb.rest.to_quaternion().normalized())  
+                        if(wb.cQ!=None):
+                            quatSpring(wb, wb.cQ, wb.Kc)    
                 for i in range(scene.jiggle.fix_iterations):               
                     for wb in bl2:
                         b = wb.b        
