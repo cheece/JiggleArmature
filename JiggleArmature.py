@@ -29,8 +29,8 @@
 bl_info = {
     "name": "Jiggle Armature",
     "author": "Simón Flores",
-    "version": (2, 1, 0),
-    "blender": (2, 77, 0),
+    "version": (2, 1, 1),
+    "blender": (2, 80, 0),
     "description": "Jiggle bone animation tool",
     "warning": "",
     "wiki_url": "",
@@ -61,20 +61,20 @@ SHOW_DISPLACEMENT = True
     
 class JiggleArmature(bpy.types.PropertyGroup):
 #    enabled = bpy.props.BoolProperty(default=False, update = funp("enabled"))
-    fps = bpy.props.FloatProperty(name = "simulation fps",default = 24)
-    time_acc = bpy.props.FloatProperty(default= 0.0)
+    fps: bpy.props.FloatProperty(name = "simulation fps",default = 24)
+    time_acc: bpy.props.FloatProperty(default= 0.0)
     #Kd = bpy.props.FloatProperty(name = "angular damping",min=0.0, max=1.0,default = 0.01, update = funp("Kd"))
    # Ks = bpy.props.FloatProperty(name = "stiffness",min=0.0 , max = 1.0, default = 0.8, update = funp("Ks"))
     
 class JiggleScene(bpy.types.PropertyGroup):
-    test_mode = bpy.props.BoolProperty(default=False)
-    sub_steps = bpy.props.IntProperty(min=1, default = 2)
-    iterations = bpy.props.IntProperty(min=1, default = 4)
-    fix_iterations = bpy.props.IntProperty(min=1, default = 0)
-    last_frame = bpy.props.IntProperty()
-    length_fix_iters = bpy.props.IntProperty(min=0, default = 2)
-    show_displacement = bpy.props.BoolProperty( default = False)
-    fix_displacement= bpy.props.BoolProperty( default = True)
+    test_mode: bpy.props.BoolProperty(default=False)
+    sub_steps :bpy.props.IntProperty(min=1, default = 2)
+    iterations : bpy.props.IntProperty(min=1, default = 4)
+    fix_iterations :bpy.props.IntProperty(min=1, default = 0)
+    last_frame : bpy.props.IntProperty()
+    length_fix_iters : bpy.props.IntProperty(min=0, default = 2)
+    show_displacement : bpy.props.BoolProperty( default = False)
+    fix_displacement: bpy.props.BoolProperty( default = True)
 def writemat(f, M):
     M = M.transposed()
     for i in M:
@@ -82,7 +82,7 @@ def writemat(f, M):
             f.write(str(j)+" ")
     f.write("\n")
  
-class JiggleArmaturePanel(bpy.types.Panel):
+class JARM_PT_armature(bpy.types.Panel):
     bl_idname = "Armature_PT_jiggle"
     bl_label = "Jiggle Armature"
     bl_space_type = 'PROPERTIES'
@@ -99,7 +99,7 @@ class JiggleArmaturePanel(bpy.types.Panel):
         col.prop(context.object.data.jiggle,"fps")
         
 
-class JiggleScenePanel(bpy.types.Panel):
+class JARM_PT_scene(bpy.types.Panel):
     bl_idname = "Scene_PT_jiggle"
     bl_label = "Jiggle Scene"
     bl_space_type = 'PROPERTIES'
@@ -164,24 +164,24 @@ def funp(prop):
         inop = False
     return f
 class JiggleBone(bpy.types.PropertyGroup):
-    enabled = bpy.props.BoolProperty(default=False, update = funp("enabled"))
-    Kld = bpy.props.FloatProperty(name = "linear damping",min=0.0, max=1.0,default = 0.01, update = funp("Kld"))
-    Kd = bpy.props.FloatProperty(name = "angular damping",min=0.0, max=1.0,default = 0.01, update = funp("Kd"))
-    Ks = bpy.props.FloatProperty(name = "stiffness",min=0.0 , max = 1.0, default = 0.8, update = funp("Ks"))
-    mass = bpy.props.FloatProperty(min=0.0001, default = 1.0, update = funp("mass"))  
+    enabled : bpy.props.BoolProperty(default=False, update = funp("enabled"))
+    Kld:bpy.props.FloatProperty(name = "linear damping",min=0.0, max=1.0,default = 0.01, update = funp("Kld"))
+    Kd : bpy.props.FloatProperty(name = "angular damping",min=0.0, max=1.0,default = 0.01, update = funp("Kd"))
+    Ks : bpy.props.FloatProperty(name = "stiffness",min=0.0 , max = 1.0, default = 0.8, update = funp("Ks"))
+    mass : bpy.props.FloatProperty(min=0.0001, default = 1.0, update = funp("mass"))  
     #M = bpy.props.FloatVectorProperty(size=9,subtype='MATRIX')    
-    R = bpy.props.FloatVectorProperty(name="rotation", size=4,subtype='QUATERNION')
-    W = bpy.props.FloatVectorProperty(size=3,subtype='XYZ') #angular velocity
-    P = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
-    V = bpy.props.FloatVectorProperty(size=3,subtype='XYZ')	#linear velocity, ok? 
+    R : bpy.props.FloatVectorProperty(name="rotation", size=4,subtype='QUATERNION')
+    W : bpy.props.FloatVectorProperty(size=3,subtype='XYZ') #angular velocity
+    P : bpy.props.FloatVectorProperty(size=3,subtype='XYZ')
+    V : bpy.props.FloatVectorProperty(size=3,subtype='XYZ')	#linear velocity, ok? 
     
-    use_custom_rest = bpy.props.BoolProperty(default=False, update = funp("use_custom_rest"))
+    use_custom_rest : bpy.props.BoolProperty(default=False, update = funp("use_custom_rest"))
     
-    rest = bpy.props.FloatVectorProperty(name="rotation", size=4,subtype='QUATERNION')
+    rest : bpy.props.FloatVectorProperty(name="rotation", size=4,subtype='QUATERNION')
     
-    control = bpy.props.FloatProperty(name = "control",min=0.0, max=1.0,default = 1, update = funp("control"))
-    control_bone = bpy.props.StringProperty(name = "control bone")
-    debug = bpy.props.StringProperty()
+    control :bpy.props.FloatProperty(name = "control",min=0.0, max=1.0,default = 1, update = funp("control"))
+    control_bone :bpy.props.StringProperty(name = "control bone")
+    debug: bpy.props.StringProperty()
     
 def skew(v):
     m = Matrix.Identity(3)
@@ -211,7 +211,7 @@ class ResetJigglePropsOperator(bpy.types.Operator):
     def execute(self, context):
         scene = context.scene
         for o in scene.objects:
-            if(o.select and o.type == 'ARMATURE' ):
+            if(o.select_get() and o.type == 'ARMATURE' ):
                 arm = o.data
                 ow = o.matrix_world
                 scale = maxis(ow,0).length
@@ -229,13 +229,13 @@ class ResetJigglePropsOperator(bpy.types.Operator):
                         Jb.W = Vector((0,0,0))
                         #Jb.M = Matrix(M)
         return {'FINISHED'}
-class SetRestJigglePropsOperator(bpy.types.Operator):
+class JARM_OT_set_rest(bpy.types.Operator):
     bl_idname = "jiggle.set_rest"
     bl_label = "Set Rest"
     def execute(self, context):
         scene = context.scene
         for o in scene.objects:
-            if(o.select and o.type == 'ARMATURE' ):
+            if(o.select_get() and o.type == 'ARMATURE' ):
                 arm = o.data
                 ow = o.matrix_world
                 scale = maxis(ow,0).length
@@ -243,13 +243,13 @@ class SetRestJigglePropsOperator(bpy.types.Operator):
                 i=0
                 for b in o.pose.bones:
                     if(b.bone.select):                    
-                        M = b.parent.matrix.inverted()*b.matrix #ow*Sbp.wmat* Sb.rmat #im 
+                        M = b.parent.matrix.inverted()@b.matrix #ow*Sbp.wmat* Sb.rmat #im 
                         Jb = b.bone.jiggle
                         setq(Jb.rest, M.to_quaternion().normalized()) 
                         Jb.use_custom_rest = True
         return {'FINISHED'}
 
-class JiggleBonePanel(bpy.types.Panel):
+class JARM_PT_bone(bpy.types.Panel):
     bl_idname = "Bone_PT_jiggle_bone"
     bl_label = "Jiggle Bone"
     bl_space_type = 'PROPERTIES'
@@ -354,22 +354,22 @@ class JB:
         self.rest = None
         self.rest_w = None
         self.w = 0
+        self.Kc = 0
+        self.cQ = None
         self.X = None
         self.P = None
         self.R = None
         self.Q = None
-        self.cQ = None
-        self.Kc = 0
         self.iI = Matrix.Identity(3) #first naive approach
         self.iIw = self.iI
     def computeI(self):
         self.iI = Matrix.Identity(3)*(self.w/(self.l*self.l)*5.0/2.0)
     def updateIW(self):
         rot = self.Q.to_matrix()
-        self.iIw = rot*self.iI*rot.transposed()
+        self.iIw = rot@self.iI@rot.transposed()
  
 def propB(ow,b, l, p):
-    j = JB(b, ow*b.matrix, p)
+    j = JB(b, ow@b.matrix, p)
     l.append(j)
     for c in b.children:
         propB(ow,c,l,j)
@@ -829,7 +829,7 @@ def locSpringSimple(Jb):
     lf = Jb.l*0.5
 
    
-    ld = Jb.parent.P+Jb.parent.Q*v0 - Jb.P-Jb.Q*Vector((0,-lf,0))
+    ld = Jb.parent.P+Jb.parent.Q@v0 - Jb.P-Jb.Q@Vector((0,-lf,0))
     ww = 1.0/(w0+w1)
     if w0>0:
         Jb.parent.P+= -ld*w0*ww 
@@ -856,8 +856,8 @@ def locSpring(Jb):
     Jb.updateIW()
     Jb.parent.updateIW()
     
-    connector0 = Jb.parent.P+Jb.parent.Q*v0
-    connector1 = Jb.P+Jb.Q*Vector((0,-lf,0))
+    connector0 = Jb.parent.P+Jb.parent.Q@v0
+    connector1 = Jb.P+Jb.Q@Vector((0,-lf,0))
  
     computeMatrixK(connector0, w0, P0, Jb.parent.iIw, K1)
     computeMatrixK(connector1, w1, P1, Jb.iIw, K2)
@@ -866,30 +866,30 @@ def locSpring(Jb):
    # print(connector0,connector1)
    # print(Jb.iIw)
     
-    pt = Kinv * (connector1 - connector0)
+    pt = Kinv @ (connector1 - connector0)
     if (w0 != 0.0):
         r0 = connector0 - P0
         Jb.parent.P += w0*pt
-        ot = (Jb.parent.iIw * (r0.cross(pt)))
+        ot = (Jb.parent.iIw @ (r0.cross(pt)))
         
         otQ = Quaternion()
         otQ.x =ot[0]
         otQ.y = ot[1]
         otQ.z =  ot[2]
         otQ.w = 0         
-        Jb.parent.Q = qadd(Jb.parent.Q, otQ*Jb.parent.Q*0.5).normalized() 
+        Jb.parent.Q = qadd(Jb.parent.Q, otQ@Jb.parent.Q*0.5).normalized() 
         
     if (w1 != 0.0):
         r1 = connector1 - P1
         Jb.P += -w1*pt
-        ot = (Jb.iIw * (r1.cross(-pt)))
+        ot = (Jb.iIw @ (r1.cross(-pt)))
         
         otQ = Quaternion()
         otQ.x =ot[0]
         otQ.y = ot[1]
         otQ.z =  ot[2]
         otQ.w = 0         
-        Jb.Q = qadd(Jb.Q, otQ*Jb.Q*0.5).normalized() 
+        Jb.Q = qadd(Jb.Q, otQ@Jb.Q*0.5).normalized() 
          
     
 def quatSpringGradient1(Q0,Q1,r):
@@ -1100,7 +1100,7 @@ def quatSpring(Jb,r=None,k=None):
     if(k==None):
         k = Jb.k 
         
-    ra = Q0.inverted()*Q1
+    ra = Q0.inverted()@Q1
     if ra.dot(r) < 0:
         r = -r
         
@@ -1183,14 +1183,14 @@ def step(scene):
                         wb.R = wb.Q = Jb.R
                         wb.rest =  wb.rest_w #b.bone.matrix_local #
                         if(b.parent!=None):
-                            wb.rest = wb.parent.rest_w.inverted()*wb.rest_w
+                            wb.rest = wb.parent.rest_w.inverted()@wb.rest_w
                        # saxis(wb.rest,3, mpos(wb.rest)*scale)
                 
                         wb.rest_base = b.bone.matrix_local
                         if(b.parent!=None):
-                            wb.rest_base = b.parent.bone.matrix_local.inverted()*wb.rest_base
+                            wb.rest_base = b.parent.bone.matrix_local.inverted()@wb.rest_base
                             
-                        wb.rest_p = wb.parent.rest_w.inverted()* (maxis(wb.rest_w,3)- maxis(wb.rest_w,1)*b.bone.length*0.5)# mpos(wb.rest)
+                        wb.rest_p = wb.parent.rest_w.inverted()@ (maxis(wb.rest_w,3)- maxis(wb.rest_w,1)*b.bone.length*0.5)# mpos(wb.rest)
                         wb.l = b.bone.length*scale
                         wb.w = 1.0/Jb.mass
                         wb.k = 1- pow(1-Jb.Ks, 1/scene.jiggle.iterations)
@@ -1203,7 +1203,7 @@ def step(scene):
                         qv.z = Jb.W[2]
                         qv.w = 0         
                                 
-                        wb.Q = qadd(wb.Q, qv*wb.Q*dt*0.5).normalized() 
+                        wb.Q = qadd(wb.Q, qv@wb.Q*dt*0.5).normalized() 
                         
                         wb.P = wb.X + Jb.V*dt
                         wb.computeI()
@@ -1214,10 +1214,9 @@ def step(scene):
                                 cb = o.pose.bones[Jb.control_bone]
                                 clm = cb.matrix
                                 if(cb.parent!=None):
-                                    clm = cb.parent.matrix.inverted()*clm
+                                    clm = cb.parent.matrix.inverted()@clm
                                 wb.cQ = clm.to_quaternion().normalized()
                                 wb.Kc = 1- pow(1-Jb.control, 1/scene.jiggle.iterations)
-                            
                             
                             
                             
@@ -1242,7 +1241,7 @@ def step(scene):
                         if(b.parent==None):
                             continue                
                         Jb = b.bone.jiggle                     
-                        quatSpring(wb,Jb.rest if Jb.use_custom_rest else wb.rest.to_quaternion().normalized())  
+                        quatSpring(wb,  Jb.rest if Jb.use_custom_rest else wb.rest.to_quaternion().normalized())   
                         if(wb.cQ!=None):
                             quatSpring(wb, wb.cQ, wb.Kc)    
                 for i in range(scene.jiggle.fix_iterations):               
@@ -1275,7 +1274,7 @@ def step(scene):
                     
                     Jb.V = (wb.P - wb.X)/dt
                     Jb.P = wb.P.copy()
-                    qv = wb.Q*Jb.R.conjugated() #qadd(wb.Q,-Jb.R)*Jb.R.conjugated()#
+                    qv = wb.Q@Jb.R.conjugated() #qadd(wb.Q,-Jb.R)*Jb.R.conjugated()#
                     Jb.W = Vector((qv.x,qv.y,qv.z))*(2/dt)
                     Jb.R = wb.Q
                     
@@ -1315,7 +1314,7 @@ def step(scene):
                     pM = ow
                     if(b.parent!=None):
                         pM = wb.parent.M
-                    mb =  (pM*wb.rest_base).inverted()*wb.M
+                    mb =  (pM@wb.rest_base).inverted()@wb.M
                     
                     #if SHOW_DISPLACEMENT:
                     #saxis(mb,3,Vector((0,0,0)))
@@ -1356,7 +1355,7 @@ def bake(aa):
     scene.frame_set(scene.frame_start)
     
     for o in scene.objects:
-        if(o.type == 'ARMATURE' and (o.select or aa)):
+        if(o.type == 'ARMATURE' and (o.select_get() or aa)):
             
             
             arm = o.data
@@ -1367,7 +1366,7 @@ def bake(aa):
             for b in o.pose.bones:
                 b.bone.select = (b.bone.select or aa) and b.bone.jiggle.enabled
                 if(b.bone.select or aa and b.bone.jiggle.enabled):                    
-                    M = ow*b.matrix #ow*Sbp.wmat* Sb.rmat #im
+                    M = ow@b.matrix #ow*Sbp.wmat* Sb.rmat #im
                     #l ,r,s = M.decompose()
                     
                     Jb = b.bone.jiggle
@@ -1384,8 +1383,8 @@ def bake(aa):
         update(scene,tm=True)
         print("frame: ",i)
         for o in scene.objects:
-            if( (o.select or aa) and o.type == 'ARMATURE' ):
-                scene.objects.active = o
+            if( (o.select_get() or aa) and o.type == 'ARMATURE' ):
+                bpy.context.view_layer.objects.active = o 
                 m = o.mode == 'POSE'
                 
                 if(not m):
@@ -1398,43 +1397,43 @@ def bake(aa):
     #backing= False
     scene.jiggle.test_mode = ltm
                    
-class BakeOperator(bpy.types.Operator):
-    a = bpy.props.BoolProperty()
+class JARM_OT_bake(bpy.types.Operator):
+    a: bpy.props.BoolProperty()
     bl_idname = "jiggle.bake"
     bl_label = "Bake Animation"
     def execute(self, context):
         bake(self.a)           
         return {'FINISHED'}    
 
+classes = (
+    JARM_PT_armature,
+    JiggleScene,
+    JARM_PT_scene,
+    JiggleArmature,
+    JiggleBone,
+    JARM_OT_bake,
+    JARM_OT_set_rest,
+    JARM_PT_bone
+)
+
 def register():
-    bpy.app.handlers.frame_change_pre.append(update) 
     
-    bpy.utils.register_class(JiggleArmaturePanel)
-    bpy.utils.register_class(JiggleScene)
-    bpy.types.Scene.jiggle = bpy.props.PointerProperty(type = JiggleScene)
-    bpy.utils.register_class(JiggleScenePanel)
-    bpy.utils.register_class(JiggleArmature)
-    bpy.utils.register_class(JiggleBone) 
-    bpy.utils.register_class(BakeOperator)
+    from bpy.utils import register_class
+    for cls in classes:
+        register_class(cls) 
+    bpy.app.handlers.frame_change_pre.append(update) 
+     
+    bpy.types.Scene.jiggle = bpy.props.PointerProperty(type = JiggleScene) 
 
     bpy.types.Armature.jiggle = bpy.props.PointerProperty(type = JiggleArmature)
     bpy.types.Bone.jiggle = bpy.props.PointerProperty(type = JiggleBone)
-    bpy.types.Bone.jiggle_tp = bpy.props.FloatProperty()
-    bpy.utils.register_class(ResetJigglePropsOperator)
-
-    bpy.utils.register_class(SetRestJigglePropsOperator)
-    bpy.utils.register_class(JiggleBonePanel)
+    bpy.types.Bone.jiggle_tp = bpy.props.FloatProperty() 
 def unregister():    
 
-    bpy.utils.unregister_class(JiggleScene)
-    bpy.utils.unregister_class(JiggleScenePanel)
-    bpy.utils.unregister_class(JiggleBone)
-    bpy.utils.unregister_class(JiggleArmature)
-    bpy.utils.unregister_class(SetRestJigglePropsOperator)
-    bpy.utils.unregister_class(ResetJigglePropsOperator)
-    bpy.utils.unregister_class(JiggleBonePanel) 
-    bpy.utils.unregister_class(BakeOperator)
-    bpy.utils.unregister_class(JiggleArmaturePanel)
+    from bpy.utils import unregister_class
+    for cls in reversed(classes):
+        unregister_class(cls)
+         
     bpy.app.handlers.frame_change_pre.remove(update) 
 if __name__ == '__main__':
 	register()
