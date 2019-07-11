@@ -83,7 +83,7 @@ def writemat(f, M):
     f.write("\n")
  
 class JARM_PT_armature(bpy.types.Panel):
-    bl_idname = "Armature_PT_jiggle"
+    bl_idname = "ARMATURE_PT_jiggle"
     bl_label = "Jiggle Armature"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
@@ -100,7 +100,7 @@ class JARM_PT_armature(bpy.types.Panel):
         
 
 class JARM_PT_scene(bpy.types.Panel):
-    bl_idname = "Scene_PT_jiggle"
+    bl_idname = "SCENE_PT_jiggle"
     bl_label = "Jiggle Scene"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
@@ -219,7 +219,7 @@ class ResetJigglePropsOperator(bpy.types.Operator):
                 i=0
                 for b in o.pose.bones:
                     if(b.bone.select):                    
-                        M = ow*b.matrix #ow*Sbp.wmat* Sb.rmat #im
+                        M = ow @b.matrix #ow*Sbp.wmat* Sb.rmat #im
                         #l ,r,s = M.decompose()
                         
                         Jb = b.bone.jiggle
@@ -250,7 +250,7 @@ class JARM_OT_set_rest(bpy.types.Operator):
         return {'FINISHED'}
 
 class JARM_PT_bone(bpy.types.Panel):
-    bl_idname = "Bone_PT_jiggle_bone"
+    bl_idname = "BONE_PT_jiggle_bone"
     bl_label = "Jiggle Bone"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
@@ -1407,6 +1407,7 @@ class JARM_OT_bake(bpy.types.Operator):
 
 classes = (
     JARM_PT_armature,
+    ResetJigglePropsOperator,
     JiggleScene,
     JARM_PT_scene,
     JiggleArmature,
