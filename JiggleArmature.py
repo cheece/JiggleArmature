@@ -145,7 +145,7 @@ class JARM_OT_reset(bpy.types.Operator):
     def execute(self, context):
         scene = context.scene
         for o in scene.objects:
-            if(o.select_get() and o.type == 'ARMATURE' ):
+            if(o.select and o.type == 'ARMATURE' ):
                 arm = o.data
                 ow = o.matrix_world
                 scale = maxis(ow,0).length
@@ -170,7 +170,7 @@ class JARM_OT_set_rest(bpy.types.Operator):
     def execute(self, context):
         scene = context.scene
         for o in scene.objects:
-            if(o.select_get() and o.type == 'ARMATURE' ):
+            if(o.select and o.type == 'ARMATURE' ):
                 arm = o.data
                 ow = o.matrix_world
                 scale = maxis(ow,0).length
@@ -758,7 +758,7 @@ def bake(bake_all):
     scene.frame_set(scene.frame_start)
     
     for o in scene.objects:
-        if(o.type == 'ARMATURE' and (o.select_get() or bake_all)):
+        if(o.type == 'ARMATURE' and (o.select or bake_all)):
             
             
             arm = o.data
@@ -784,8 +784,8 @@ def bake(bake_all):
         update(scene,tm=True)
         print("frame: ",i)
         for o in scene.objects:
-            if( (o.select_get() or bake_all) and o.type == 'ARMATURE' ):
-                bpy.context.view_layer.objects.active = o 
+            if( (o.select or bake_all) and o.type == 'ARMATURE' ):
+                bpy.context.scene.objects.active = o 
                 m = o.mode == 'POSE'
                 
                 if(not m):
